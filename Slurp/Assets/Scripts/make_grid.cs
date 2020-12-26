@@ -35,7 +35,6 @@ public class make_grid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (rotating)
         {
             timer += Time.deltaTime * speed;
@@ -58,14 +57,14 @@ public class make_grid : MonoBehaviour
                 
                 GetReadyToRotate();
                 currR = rotateMe.transform.rotation;
-                dir = 1;
+                dir = -1;
                 rotating = true;
             }
             else if (Input.GetKeyDown(KeyCode.E))
             {
                 GetReadyToRotate();
                 currR = rotateMe.transform.rotation;
-                dir = -1;
+                dir = 1;
                 rotating = true;
             }
         }

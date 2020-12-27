@@ -22,7 +22,6 @@ public class player_movement : MonoBehaviour {
 		anim = playerMesh.GetComponent<Animator>();
 		peak = startPos.y + 0.5f;
 	}
-	
 	void Update () {
 		if (!playerPlaced)
 		{
@@ -36,7 +35,7 @@ public class player_movement : MonoBehaviour {
 			if (doMove)
 			{
 				Timer += Time.deltaTime * speed;
-				if (Timer < 1.5f)
+				if (Timer < 2f)
 				{
 					movePlayer(startPos, endPos, peak, Timer);
 				}
@@ -97,7 +96,7 @@ public class player_movement : MonoBehaviour {
 			else // if there's more than one thing stacked in front of you, feebly jump like a ween
 			{
 				endPos = startPos;
-				peak = startPos.y + 1.5f;
+				peak = startPos.y + 2f;
 				doMove = true;
 			}
 		}
@@ -115,7 +114,7 @@ public class player_movement : MonoBehaviour {
 				if (Physics.Raycast(transform.position + dir + Vector3.down, Vector3.down, out hit, 1f, gridLayer))
                 {
 					endPos = startPos + dir + Vector3.down;
-					peak = endPos.y + 2f;
+					peak = endPos.y + 1.5f;
 					doMove = true;
 				} else // if there's nothing directly in front or directly below, don't move
                 {
@@ -141,6 +140,7 @@ public class player_movement : MonoBehaviour {
 		if (Physics.Raycast(new Vector3(0,10,19), Vector3.down, out hit, 20f, gridLayer))
         {
 			yPos = hit.point.y + 0.5f;
+			//Debug.Log(yPos);
 			return new Vector3(0, yPos, 19);
 		} else
         {

@@ -13,31 +13,40 @@ public class make_grid : MonoBehaviour
     Quaternion currR;
     float speed = 5;
 
+    public int numRows = 20;
+    public int numColumns = 20;
+
+    public bool gridCreated = false;
+
     GameObject rotateMe;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        Color t = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1f);
-        Color m = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1f);
-        Color b = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1f);
-
-        float seed = Random.Range(0,100f); // make a random level every time 
-        for (float i = 0; i < 20; i++)
+        if (!gridCreated)
         {
-            for (float j = 0; j < 20; j++)
+            Color t = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1f);
+            Color m = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1f);
+            Color b = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1f);
+
+            float seed = Random.Range(0, 100f); // make a random level every time 
+            for (float i = 0; i < numRows; i++)
             {
-                float freq = 3f; // how dense is map
-                float levels = 5; // how many vertical levels in map
-                float yPos = Mathf.RoundToInt((Mathf.PerlinNoise(((i+seed)/20)*freq, ((j+seed)/20)*freq)-0.5f)*levels);
-                GameObject g = Instantiate(gridTile, new Vector3(i, yPos+2, j), Quaternion.identity);
-                g.transform.parent = gameObject.transform;
-                g.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_ColorTop", t);
-                g.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_ColorMid", m);
-                g.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_ColorBot", b);
+                for (float j = 0; j < numColumns; j++)
+                {
+                    float freq = 3f; // how dense is map
+                    float levels = 5; // how many vertical levels in map
+                    float yPos = Mathf.RoundToInt((Mathf.PerlinNoise(((i + seed) / numRows) * freq, ((j + seed) / numColumns) * freq) - 0.5f) * levels);
+                    GameObject g = Instantiate(gridTile, new Vector3(i, yPos + 2, j), Quaternion.identity);
+                    g.transform.parent = gameObject.transform;
+                    g.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_ColorTop", t);
+                    g.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_ColorMid", m);
+                    g.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_ColorBot", b);
+                }
             }
-        }   
+
+            gridCreated = true;
+        }
     }
 
     // Update is called once per frame

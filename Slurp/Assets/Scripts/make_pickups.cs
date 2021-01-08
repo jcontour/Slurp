@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class make_enemies : MonoBehaviour
+public class make_pickups : MonoBehaviour
 {
 
     public GameObject e;
@@ -17,6 +17,8 @@ public class make_enemies : MonoBehaviour
     Vector3 startPos;
     Vector3[] startPosOptions;
 
+    public Mesh[] meshOptions;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +27,7 @@ public class make_enemies : MonoBehaviour
 
         for (int i = 0; i < numEnemies; i++)
         {
-            CreateEnemy();
+            CreateEnemy(Random.Range(0,12));
         }
     }
 
@@ -35,7 +37,7 @@ public class make_enemies : MonoBehaviour
         
     }
 
-    void CreateEnemy()
+    void CreateEnemy(int whichMesh)
     {
         startPosOptions = new Vector3[]
         {
@@ -51,6 +53,8 @@ public class make_enemies : MonoBehaviour
         dir = dirs[whichDir];
 
         GameObject doot = Instantiate(e, startPos, Quaternion.identity);
-        doot.GetComponent<enemy_move>().dir = dir;
+        doot.GetComponent<straight_move>().dir = dir;
+        doot.GetComponentInChildren<MeshFilter>().mesh = meshOptions[whichMesh];
+        doot.GetComponent<get_collected>().meshNum = whichMesh;
     }
 }

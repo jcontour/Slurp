@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemy_move : MonoBehaviour
+public class straight_move : MonoBehaviour
 {
     public Vector3 dir;
     bool enemyPlaced = false;

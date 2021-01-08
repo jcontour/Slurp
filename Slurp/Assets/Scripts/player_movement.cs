@@ -22,8 +22,14 @@ public class player_movement : MonoBehaviour {
 
 	float size = 1.2f;
 
+	Vector3 throw_dir;
+	collect_throw thrower;
+	float power = 0;
+	public float maxPower;
+
 	void Start () {
 		anim = playerMesh.GetComponent<Animator>();
+		thrower = GetComponent<collect_throw>();
 		peak = startPos.y + 0.5f;
 	}
 	void Update () {
@@ -53,34 +59,76 @@ public class player_movement : MonoBehaviour {
 			}
 			else
 			{
-				if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+				if (Input.GetKey(KeyCode.LeftShift))
 				{
-					startPos = transform.position;
-					dir = Vector3.left;
-					checkCanMove(startPos, dir);
+
+					power += Time.deltaTime * 0.5f;
+					if (power > maxPower)
+                    {
+						power = 0;
+                    }
+					if (thrower.hasCollected)
+					{
+						if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+						{
+							throw_dir = Vector3.left;
+							int p = Mathf.RoundToInt(power);
+							thrower.Throw(p, transform.position, throw_dir);
+						}
+						if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+						{
+							throw_dir = Vector3.right;
+							int p = Mathf.RoundToInt(power);
+							thrower.Throw(p, transform.position, throw_dir);
+						}
+						if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+						{
+							throw_dir = Vector3.forward;
+							int p = Mathf.RoundToInt(power);
+							thrower.Throw(p, transform.position, throw_dir);
+						}
+						if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+						{
+							throw_dir = Vector3.back;
+							int p = Mathf.RoundToInt(power);
+							thrower.Throw(p, transform.position, throw_dir);
+						}
+					} else
+                    {
+						Debug.Log("nothing collected");
+                    }
 				}
-				if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+				else
 				{
-					startPos = transform.position;
-					dir = Vector3.right;
-					checkCanMove(startPos, dir);
+					if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+					{
+						startPos = transform.position;
+						dir = Vector3.left;
+						checkCanMove(startPos, dir);
+					}
+					if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+					{
+						startPos = transform.position;
+						dir = Vector3.right;
+						checkCanMove(startPos, dir);
+					}
+					if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+					{
+						startPos = transform.position;
+						dir = Vector3.forward;
+						checkCanMove(startPos, dir);
+					}
+					if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+					{
+						startPos = transform.position;
+						dir = Vector3.back;
+						checkCanMove(startPos, dir);
+					}
+					if (Input.GetKeyDown(KeyCode.Space))
+					{
+						Slam();
+					}
 				}
-				if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-				{
-					startPos = transform.position;
-					dir = Vector3.forward;
-					checkCanMove(startPos, dir);
-				}
-				if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-				{
-					startPos = transform.position;
-					dir = Vector3.back;
-					checkCanMove(startPos, dir);
-				}
-				if (Input.GetKeyDown(KeyCode.Space))
-                {
-					Slam();
-                }
 			}
 		}
 	}
